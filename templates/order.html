@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order|E-Store</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/about.css' %}">
+<style>
+            input{
+                height:40px;
+                 margin-top: 1%;
+                 margin-left: 1%;
+            }
+            {
+	            box-sizing: border-box;
+	            margin: 0;
+	            padding: 0;
+	            font-family: Raleway, sans-serif;
+            }
+
+            body {
+	            background: linear-gradient(90deg, #D6F1EC, #776BCC);
+	            text-align:center;
+	            margin: 40px;
+                padding: 0px;
+	            height: 500%;
+                width: 90%;
+            }
+            h2{
+                text-align:center;
+            }
+            .screen{
+            background: linear-gradient(90deg, #5D54A4, #7C78B8);
+                position: relative;
+                height: 600px;
+	            width: 360px;
+	            box-shadow: 0px 0px 24px #5C5696;
+                margin:auto;
+            }
+        </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="screen">
+        <h4>Place the Order</h4>
+    <form onsubmit="return handleData()" method="post" action="">
+        {% csrf_token %}
+        <input type="text" name="name" placeholder="Name" required><br>
+        <input type="number" name="age" placeholder="Age" required><br>
+        <input type="number" name="phonenumber" placeholder="Phone Number" required><br>
+        <input type="email" name="email" placeholder="Email" required><br>
+        <input type="text" name="address" placeholder="Address" required><br>
+        <input type="date" name="dob" placeholder="Date Of Birth" required><br>
+        <b><label for="gender">Gender</label></b>
+        <input type="radio" name="gender" value="male" required>Male
+        <input type="radio" name="gender" value="female">Female<br>
+        <b><label for="department">Department</label></b>
+        <select name="department" id="department" class="form-control" required>
+            <option value="">--Select Department--</option>
+            {% for item in department  %}
+            <option value="{{ item.id }}">{{ item.name }}</option>
+            {% endfor %}
+        </select>
+    <br/>
+        <b><label for="department">Courses</label></b>
+        <select name="course" id="course" class="form-control" required>
+            <option value="">--Select course--</option>
+            {% for item in course  %}
+            <option value="{{item.department.id}}">{{ item.name }}</option>
+            {% endfor %}
+        </select><br>
+
+        <b><label for="purpose" style="height:40px;">Purpose</label></b>
+
+        <select name="purpose" id="purpose" required>
+            <option value="">Select Options</option>
+            <option value="enwuiry">For Enquiry</option>
+            <option value="orderplaced">Place Order</option>
+            <option value="return">Return</option>
+        </select><br>
+        <div>
+        <b><label for="materials_provide" style="height:40px;">Materials Provide</label></b><br>
+        <input type="checkbox" name="check" id="notebook"  value="notebook">
+        <label for="notebook">Note Book</label>
+        <input type="checkbox" name="check" id="pencil"  value="pencil">
+        <label for="pencil">Pencil</label>
+        <input type="checkbox" name="check" id="pen" value="pen">
+        <label for="pen">Pen</label>
+        <input type="checkbox" name="check" id="a4sheet" value="a4sheet">
+        <label for="a4sheet">A4 Sheet</label><br>
+        </div>
+        <div style="visibility:hidden; color:red; " id="chk_option_error">
+            Please select at least one option.
+        </div>
+
+
+        <input type="submit">
+
+    </form>
+</div>
+    </div>
+    <div>
+        {% for message in messages %}
+            <h3>{{ message }}</h3>
+        {% endfor %}
+    </div>
+<div style="height:40px;">
+    <button><a href="{% url 'home' %}">Home</a></button>
+    <button><a href="{% url 'logout' %}">Logout</a></button>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+
+function handleData()
+{
+    var form_data = new FormData(document.querySelector("form"));
+    if(!form_data.has("check"))
+    {
+        document.getElementById("chk_option_error").style.visibility = "visible";
+      return false;
+    }
+    else
+    {
+        document.getElementById("chk_option_error").style.visibility = "hidden";
+      return true;
+    }
+
+}
+
+$(document).ready(function(){
+
+ var department = $("#department");
+ var course = $("#course");
+ var $options = course.find('option');
+ department.on('change',function(){
+    course.html($options.filter('[value="'+ this.value  +'"]'));
+ }).trigger('change');
+});
+</script>
+
+</body>
+</html>

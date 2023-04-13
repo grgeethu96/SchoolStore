@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home|E-School</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/about.css' %}">
+<style>
+    div.screen {
+        background-color: yellow;
+        padding: 20px;
+    }
+
+    @media screen and (max-width: 600px) {
+        div.screen {
+            display: none;
+        }
+    }
+
+</style>
+</head>
+<body>
+<p style="background-color:powderblue;">
+<div class="container">
+<h3>Welcome to E-Store</h3>
+<div class="screen">
+    <button><a href="{% url 'order' %}">Make Order</a></button>
+</div>
+    </div>
+<div>
+    {% for message in messages %}
+        <h3>{{ message }}</h3>
+    {% endfor %}
+</div>
+</body>
+</html>
